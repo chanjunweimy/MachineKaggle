@@ -1,4 +1,4 @@
 # MachineKaggle
 Machine learning hw
 
-From CS178
+From CS178 UCI
