@@ -51,10 +51,10 @@ def to1ofK(Y, values=None):
     n,d = np.matrix(Y).shape
 
     assert min(n,d) == 1
-    values = values if values else list(np.unique(Y))
+    values = list(values) if values is not None else list(np.unique(Y))
     C = len(values)
     flat_Y = Y.flatten()
-    
+   
     index = []
     for l in flat_Y:
         index.append(values.index(l))
@@ -79,7 +79,7 @@ def from1ofK(Y, values=None):
     array
         Y in single row/col form.
     """
-    return Y.argmax(1) if not values else twod([values[i] for i in Y.argmax(1)]).T
+    return Y.argmax(1) if values is None else twod([values[i] for i in Y.argmax(1)]).T
 
 
 def toIndex(Y, values=None):
@@ -102,7 +102,7 @@ def toIndex(Y, values=None):
     n,d = np.matrix(Y).shape
 
     assert min(n,d) == 1
-    values = values if values else list(np.unique(Y))
+    values = list(values) if values is not None else list(np.unique(Y))
     C = len(values)
     flat_Y = Y.flatten()
 

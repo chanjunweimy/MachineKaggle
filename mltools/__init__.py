@@ -14,6 +14,7 @@ from . import transforms
 # import classifiers into sub-namespaces
 from . import knn 
 
-from . import linear
+from . import dtree
+
 
 

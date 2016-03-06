@@ -4,6 +4,7 @@ import numpy as np
 
 from numpy import atleast_2d as twod
 from numpy import asmatrix as mat
+from numpy import asmatrix as arr
 
 from .utils import toIndex
 
@@ -50,8 +51,9 @@ class classifier:
     The default implementation uses predictSoft and converts to the most likely class.
     """
     #return np.argmax( self.predictSoft(X) , axis=1 )
-    idx = np.argmax( self.predictSoft(X) , axis=1 )       # find most likely class (index)
-    return np.asarray([[self.classes[i]] for i in idx])   # convert to saved class values
+    idx = np.argmax( self.predictSoft(X) , axis=1 )      # find most likely class (index)
+    #return self.classes[idx]                        # convert to saved class values
+    return np.asarray([[self.classes[i]] for i in np.ravel(idx)])   # convert to saved class values
 
 
   def predictSoft(self,X):
@@ -80,9 +82,9 @@ class classifier:
     Y : M x 1 numpy array    
       Array of classes (targets) corresponding to the data points in X.
     """
-    Y_hat = self.predict(X)
-    Y_hat = np.transpose(Y_hat)
-    return np.mean(Y_hat != Y)
+    Y    = arr( Y )
+    Yhat = arr( self.predict(X) )
+    return np.mean(Yhat.reshape(Y.shape) != Y)
 
 
   def nll(self, X, Y):
@@ -98,8 +100,10 @@ class classifier:
     Y : M x 1 numpy array   
       Array of target values (classes) for each datum in X
     """
-    P = self.predictSoft(X)
-    P /= np.sum(P, axis=1)       # normalize to sum to one
+    M,N = X.shape
+    P = arr( self.predictSoft(X) )
+    P /= np.sum(P, axis=1, keepdims=True)       # normalize to sum to one
+    Y = toIndex(Y, self.classes)
     return - np.mean( np.log( P[ range(M), Y ] ) ) # evaluate
 
 
