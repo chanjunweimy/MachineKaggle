@@ -15,18 +15,47 @@ Xnew = np.zeros((m,0));
 isVisited = [False] * n;
 tolerant = 0.3;
 
-errT = np.zeros((40,))
+running = 0;
+errT = np.zeros((running,))
 nFolds = 5
-errX = np.zeros((40,nFolds))
+errX = np.zeros((running,nFolds))
 
-learners = np.arange(40);
-chosen = np.zeros(40);
+learners = np.arange(running);
+chosen = np.zeros(running);
 
+prechosen = np.loadtxt("chosenIndexes-3.txt");
+
+for c in prechosen:
+    c = int(c);
+    temp = X[:,c];
+    temp = temp.reshape(temp.shape[0],1);
+    Xnew = np.append(Xnew[:,], temp, 1);
+    isVisited[c] = True;
+    
+prechosen = np.loadtxt("chosenIndexes-4.txt");
+
+for c in prechosen:
+    c = int(c);
+    temp = X[:,c];
+    temp = temp.reshape(temp.shape[0],1);
+    Xnew = np.append(Xnew[:,], temp, 1);
+    isVisited[c] = True;
+    
+prechosen = np.loadtxt("chosenIndexes-5.txt");
+
+for i in range(14):
+    c = int(prechosen[i]);
+    temp = X[:,c];
+    temp = temp.reshape(temp.shape[0],1);
+    Xnew = np.append(Xnew[:,], temp, 1);
+    isVisited[c] = True;    
+   
+print Xnew.shape;
 print X.shape
 print Y.shape
 print learners.shape
 
-for i in range(40):
+for i in range(running):
     best = -1;
     err = -1;
     for j in range (n):
@@ -40,8 +69,12 @@ for i in range(40):
         if err == -1:
             err = tempErr;
             best = j;
+        elif err > tempErr:
+            err = tempErr;
+            best = j;
     if err > tolerant:
         print i;
+        print best;
         print err;
         temp = X[:,best];
         temp = temp.reshape(temp.shape[0],1);
@@ -60,6 +93,7 @@ for i in range(40):
         break;
 
 print Xnew.shape;
+np.savetxt("chosenIndexes.txt", chosen);
 
 errX = np.mean(errX, axis=1);
 
@@ -71,7 +105,7 @@ linewidth=2);
 plt.axis([1,25,0,0.5]);
 plt.show();
 
-lr = ml.dtree.treeRegress( Xnew, Ynew , maxDepth=20, minParent=1024); # create and train model
+lr = ml.dtree.treeRegress( Xnew, Y , maxDepth=20, minParent=1024); # create and train model
 p = lr.predict(Xe1);
 p = p[:,0]
 print p.shape;
