@@ -33,7 +33,7 @@ prob = svm_problem(Y, prob_x)
 
 print ("start svm training");
 
-m = svm_train(prob,'-s 4 -t 0 -n 0.5 -c 1')
+m = svm_train(prob,'-s 3 -t 2 -n 0.1 -c 1.0 -g 0.01 -m 2000 -e 0.0005')
 p_label, p_acc, p_val = svm_predict(y, pred_x, m)
 # print(len(p_val))
 fh = open('predictions0.csv','w')    # open file for upload

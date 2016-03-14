@@ -64,7 +64,7 @@ for i in range(running):
         temp = X[:,j];
         temp = temp.reshape(temp.shape[0],1);
         Xtemp = np.append(Xnew[:,], temp, 1);
-        lr = ml.dtree.treeRegress( Xtemp, Y , maxDepth=20, minParent=1024); # create and train model
+        lr = ml.dtree.treeRegress( Xtemp, Y , maxDepth=20, minParent=1024); 
         tempErr = lr.mse(X,Y);
         if err == -1:
             err = tempErr;
@@ -73,9 +73,6 @@ for i in range(running):
             err = tempErr;
             best = j;
     if err > tolerant:
-        print i;
-        print best;
-        print err;
         temp = X[:,best];
         temp = temp.reshape(temp.shape[0],1);
         Xnew = np.append(Xnew[:,], temp, 1);
@@ -85,8 +82,8 @@ for i in range(running):
         for iFold in range(nFolds):
             [Xti,Xvi,Yti,Yvi] = ml.crossValidate(Xnew,Y,nFolds,iFold)
             Xi, Yi = ml.bootstrapData(Xti,Yti);
-            classifier = ml.dtree.treeRegress(Xi, Yi , maxDepth=20, minParent=1024) # Train a model on data Xi, Yi
-            errX[i, iFold] = classifier.mse(Xvi,Yvi) # Apply each classifier
+            classifier = ml.dtree.treeRegress(Xi, Yi , maxDepth=20, minParent=1024)
+            errX[i, iFold] = classifier.mse(Xvi,Yvi)
 
     else:
         print "can tolerant";
@@ -102,7 +99,7 @@ plt.semilogy(learners,errT,'r-', # training error (from P1)
 #learners,errV,'g-', # validation error (from P1)
 learners,errX,'m-', # cross-validation estimate of validation error
 linewidth=2);   
-plt.axis([1,25,0,0.5]);
+plt.axis([1,91,0,0.5]);
 plt.show();
 
 lr = ml.dtree.treeRegress( Xnew, Y , maxDepth=20, minParent=1024); # create and train model
