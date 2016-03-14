@@ -33,12 +33,12 @@ y = np.zeros(Xte.shape[0]);
 
     
 prob = svm_problem(Y, prob_x)
-m = svm_train(prob,'-s 4')
-p_label, p_acc, p_val = svm_predict(pred_x, m)
+m = svm_train(prob,'-s 4 -t 3 -h 0')
+p_label, p_acc, p_val = svm_predict(y,pred_x, m)
 print(len(p_val))
-#fh = open('predictions0.csv','w')    # open file for upload
-#fh.write('ID,Prediction\n')         # output header line
-#for i,fake_yi in enumerate(p_val):
-#  fh.write('{},{}\n'.format(i+1,yi)) # output each prediction
-#fh.close()
+fh = open('predictions1.csv','w')    # open file for upload
+fh.write('ID,Prediction\n')         # output header line
+for i,fake_yi in enumerate(p_val):
+    fh.write('{},{}\n'.format(i+1,fake_yi)) # output each prediction
+fh.close()
     
